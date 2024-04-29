@@ -7,45 +7,35 @@
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#60A5FA",
-    "light": "#07C983",
-    "dark": "#60A5FA",
+    "primary": "#619BF5",
+    "light": "#619BF5",
+    "dark": "#0E6CFB",
     "anchors": {
-      "from": "#60A5FA",
-      "to": "#07C983"
+      "from": "#0E6CFB",
+      "to": "#60A5FA"
     }
   },
   "topbarLinks": [
     {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+      "name": "Main Website",
+      "url": "https://gameboost.com"
     }
   ],
   "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "name": "Work With Us",
+    "url": "https://jobs.gameboost.com"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
+ 
   "anchors": [
     {
-      "name": "Documentation",
+      "name": "Developers Chat",
+      "icon": "discord",
+      "url": "https://discord.com/channels/499268368545611787/1234627294228779018"
+    },
+    {
+      "name": "Sellers Guide",
       "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "url": "https://gameboost.notion.site/Seller-Guide-1f89029e65244fc48db61772ebedb672"
     }
   ],
   "navigation": [
@@ -53,39 +43,27 @@
       "group": "Get Started",
       "pages": [
         "introduction",
-        "quickstart",
-        "development"
+        "authentication"
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Accounts",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
-      ]
-    },
-    {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
-    },
-    {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/accounts/get",
+        "api-reference/accounts/get-by-login",
+        "api-reference/accounts/list",
+        "api-reference/accounts/update-status",
+        "api-reference/accounts/bulk-status",
+        "api-reference/accounts/delete"
       ]
     }
   ],
+  "openapi": [
+    "/openapi.yaml"
+  ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "x": "https://x.com/GameBoostCom",
+    "instagram": "https://www.instagram.com/gameboostcom",
+    "discord": "https://discord.gg/gameboost"
   }
 }

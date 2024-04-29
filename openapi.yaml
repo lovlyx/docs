@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: GameBoost Seller API
+  description: API for sellers to manage their accounts on gameboost.com
+  version: 1.0.0
+  contact:
+    name: GameBoost Support
+    email: support@gameboost.com
+    url: https://gameboost.com/support
+servers:
+  - url: https://api.gameboost.com/v1
+paths:
+  /accounts:
+    get:
+      summary: Get All Accounts
+      description: Retrieve a list of all accounts associated with the authenticated user. Use the optional `with_data` query parameter to load full account details.
+      operationId: getSellerAccounts
+      parameters:
+        - name: with_data
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successfully retrieved the list of accounts.
+  /accounts/{accountId}:
+    get:
+      summary: Get Account
+      description: Retrieve details of a specific account by its ID. Use the optional `with_data` query parameter to load full account details.
+      operationId: getSellerAccountById
+      parameters:
+        - name: with_data
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successfully retrieved the account.
+    delete:
+      summary: Delete Account
+      description: Delete a specific account by its ID.
+      operationId: deleteSellerAccount
+      responses:
+        '200':
+          description: Successfully deleted the account.
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: integer
+  /accounts/by-login/{accountLogin}:
+    get:
+      summary: Get Account by Login
+      description: Retrieve details of a specific account by its login.
+      operationId: getSellerAccountByLogin
+      responses:
+        '200':
+          description: Successfully retrieved the account.
+    parameters:
+      - name: accountLogin
+        in: path
+        required: true
+        schema:
+          type: string
+  /accounts/{accountId}/status:
+    patch:
+      summary: Update Account Status
+      description: List or unlist a specific account by updating its status.
+      operationId: updateSellerAccountStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - listed
+                    - draft
+            examples:
+              List/Unlist Account:
+                value:
+                  status: listed
+      responses:
+        '200':
+          description: Successfully updated the account status.
+    parameters:
+      - name: accountId
+        in: path
+        required: true
+        schema:
+          type: integer
+  /accounts/status/bulk:
+    patch:
+      summary: Bulk Update Status
+      description: List or unlist multiple accounts by updating their status in bulk.
+      operationId: bulkUpdateSellerAccountStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - accounts
+                - status
+              properties:
+                accounts:
+                  type: array
+                  items:
+                    type: integer
+                status:
+                  type: string
+                  enum:
+                    - listed
+                    - draft
+            examples:
+              Bulk List/Unlist Accounts:
+                value: { "accounts": [ "{{accountId1}}", "{{accountId2}}" ], "status": "listed" }
+      responses:
+        '200':
+          description: Successfully updated the status of multiple accounts.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+tags: []

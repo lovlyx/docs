@@ -1,0 +1,61 @@
+---
+title: 'Authentication'
+description: 'How to authenticate your requests to the GameBoost Seller API'
+icon: 'key'
+---
+
+<Info>
+  **Prerequisite:** You should have a GameBoost account and be a verified seller.
+</Info>
+
+## Overview
+
+To authenticate your requests to the GameBoost Seller API, you need to include your API key in the `Authorization` header of each request. The API key is a unique key that identifies you as a verified seller and grants you access to the API endpoints.
+
+## Obtaining Your API Key
+
+To obtain your API key, follow these steps:
+
+1. Log in to your GameBoost account at [https://gameboost.com/login](https://gameboost.com/login).
+2. Navigate to the Dashboard > Settings.
+3. Click on the "Seller API" tab in the navbar.
+4. If you haven't generated an API Key yet, click on the "Create API Key" button.
+5. Copy the generated API key and store it securely.
+
+<Warning>
+  Keep your API key confidential and do not share it with anyone. If you suspect that your key has been compromised, revoke it and regenerate a new one immediately.
+</Warning>
+
+## Including the API Key in Requests
+
+To authenticate your requests, include the API key in the `Authorization` header as a bearer key. Here's an example using cURL:
+
+```bash
+curl -H "Authorization: Bearer YOUR_API_KEY" https://api.gameboost.com/v1/accounts
+```
+
+Replace `YOUR_API_KEY` with the actual key you obtained from the GameBoost Dashboard.
+
+## Key Expiration and Renewal
+Your API key does not expire automatically. However, if you suspect that your key has been compromised or if you want to rotate your key for security reasons, you can regenerate a new key from the Seller Dashboard.
+
+To regenerate your API key:
+
+1. Log in to your GameBoost account and navigate to the Dashboard Settings.
+2. Go to the "Seller API" tab.
+3. Click on the "Revoke API Key" button.
+4. Confirm the action by clicking "Revoke" in the pop-up dialog.
+5. After revoking the key, click on the "Create API Key" button to generate a new key.
+6. Copy the newly generated API key and update it in your application or scripts.
+
+<Warning>
+  Regenerating your API key will invalidate the old key, and any requests using the old key will be rejected. Make sure to update your key in all the places where it is used.
+</Warning>
+
+## API Rate Limits
+
+The GameBoost Seller API has rate limits in place to prevent abuse and ensure fair usage. The current rate limits are:
+
+- 500 requests per minute per seller account
+
+If you exceed these limits, you will receive a 429 Too Many Requests response. Please adjust your request rate accordingly.
