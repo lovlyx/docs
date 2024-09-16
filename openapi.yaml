@@ -32,7 +32,7 @@ paths:
       operationId: getSellerAccountById
       parameters:
         - name: with_data
-          in: query
+          in: query 
           required: false
           schema:
             type: boolean
@@ -127,6 +127,91 @@ paths:
       responses:
         '200':
           description: Successfully updated the status of multiple accounts.
+  /item-offers:
+    get:
+      summary: Get All Item Offers
+      description: Retrieve a list of all item offers associated with the authenticated user.
+      operationId: getSellerItems
+      responses:
+        '200':
+          description: Successfully retrieved the list of all items.
+  /item-offers/{itemOfferId}:
+    get:
+      summary: Get Item Offer 
+      description: Retrieve details of a specific item by its ID
+      operationId: getSellerItemOfferById
+      responses:
+        '200':
+          description: Successfully retrieved the account.
+    parameters:
+      - name: itemOfferId
+        in: path
+        required: true
+        schema:
+          type: integer
+  /item-offers/{itemOfferId}/status:
+    patch:
+      summary: Update Item Offer Status
+      description: List, unlist or archive a specific item offer by updating its status.
+      operationId: updateSellerItemOfferStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - listed
+                    - draft
+                    - archived
+            examples:
+              Archive Item Offer:
+                value:
+                  status: archived
+      responses:
+        '200':
+          description: Successfully updated the item offer status.
+    parameters:
+      - name: itemOfferId
+        in: path
+        required: true
+        schema:
+          type: integer 
+  /item-offers/status/bulk:
+    patch:
+      summary: Bulk Update Item Offer Status
+      description: List, unlist or archive multiple item offers by updating their status in bulk.
+      operationId: bulkUpdateSellerItemOfferStatus
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - itemOffers
+                - status
+              properties:
+                itemOffers:
+                  type: array
+                  items:
+                    type: integer
+                status:
+                  type: string
+                  enum:
+                    - listed
+                    - draft
+                    - archived
+            examples:
+              Bulk Archive Item Offers:
+                value: { "itemOffers": [ "{{itemOfferId1}}", "{{itemOfferId2}}" ], "status": "archived" }
+      responses:
+        '200':
+          description: Successfully updated the status of multiple item offers.
+
 components:
   securitySchemes:
     bearerAuth:
