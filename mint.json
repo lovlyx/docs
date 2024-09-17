@@ -56,7 +56,16 @@
         "api-reference/accounts/bulk-status",
         "api-reference/accounts/delete"
       ]
-    }
+    },
+    {
+        "group": "Item Offers",
+        "pages": [
+          "api-reference/item-offers/get",
+          "api-reference/item-offers/list",
+          "api-reference/item-offers/update-status",
+          "api-reference/item-offers/bulk-status"
+        ]
+      }
   ],
   "openapi": [
     "/openapi.yaml"
