@@ -11,6 +11,18 @@ servers:
   - url: https://api.gameboost.com/v1
 paths:
   /accounts:
+    post:
+      summary: Create Account
+      description: Create a new account using the provided JSON schema. To get the schema, use the `/accounts/template/{gameSlug}` endpoint.
+      operationId: createSellerAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Successfully created the account.
     get:
       summary: Get All Accounts
       description: Retrieve a list of all accounts associated with the authenticated user. Use the optional `with_data` query parameter to load full account details.
@@ -25,6 +37,20 @@ paths:
       responses:
         '200':
           description: Successfully retrieved the list of accounts.
+  /accounts/template/{gameSlug}:
+    get:
+      summary: Get Account Schema
+      description: Retrieve the JSON schema template for creating an account for a specific game.
+      operationId: getAccountTemplate
+      parameters:
+        - name: gameSlug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved the account template.
   /accounts/{accountId}:
     get:
       summary: Get Account
@@ -213,6 +239,16 @@ paths:
           description: Successfully updated the status of multiple item offers.
 
 components:
+  schemas:
+    Account:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
   securitySchemes:
     bearerAuth:
       type: http

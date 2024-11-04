@@ -50,11 +50,13 @@
       "group": "Accounts",
       "pages": [
         "api-reference/accounts/get",
-        "api-reference/accounts/get-by-login",
+        "api-reference/accounts/post",
+        "api-reference/accounts/get-template",
         "api-reference/accounts/list",
         "api-reference/accounts/update-status",
         "api-reference/accounts/bulk-status",
-        "api-reference/accounts/delete"
+        "api-reference/accounts/delete",
+        "api-reference/accounts/get-by-login"
       ]
     },
     {
