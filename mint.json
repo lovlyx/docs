@@ -25,7 +25,6 @@
     "name": "Work With Us",
     "url": "https://jobs.gameboost.com"
   },
- 
   "anchors": [
     {
       "name": "Developers Chat",
@@ -35,7 +34,7 @@
     {
       "name": "Sellers Guide",
       "icon": "book-open-cover",
-      "url": "https://gameboost.notion.site/Seller-Guide-1f89029e65244fc48db61772ebedb672"
+      "url": "https://help.gameboost.com/en/articles/9714554-seller-guide"
     }
   ],
   "navigation": [
@@ -60,14 +59,27 @@
       ]
     },
     {
-        "group": "Item Offers",
-        "pages": [
-          "api-reference/item-offers/get",
-          "api-reference/item-offers/list",
-          "api-reference/item-offers/update-status",
-          "api-reference/item-offers/bulk-status"
-        ]
-      }
+      "group": "Item Offers",
+      "pages": [
+        "api-reference/item-offers/get",
+        "api-reference/item-offers/list",
+        "api-reference/item-offers/update-status",
+        "api-reference/item-offers/bulk-status"
+      ]
+    },
+    {
+      "group": "Currency Offers",
+      "pages": [
+        "api-reference/currency-offers/get",
+        "api-reference/currency-offers/post",
+        "api-reference/currency-offers/get-all",
+        "api-reference/currency-offers/update",
+        "api-reference/currency-offers/list-offer",
+        "api-reference/currency-offers/unlist",
+        "api-reference/currency-offers/archive",
+        "api-reference/currency-offers/restore"
+      ]
+    }
   ],
   "openapi": [
     "/openapi.yaml"

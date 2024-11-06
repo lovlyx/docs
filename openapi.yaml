@@ -237,6 +237,110 @@ paths:
       responses:
         '200':
           description: Successfully updated the status of multiple item offers.
+  /currency-offers:
+    get:
+      summary: Get All Currency Offers
+      description: Retrieve a list of all currency offers.
+      operationId: getCurrencyOffers
+      responses:
+        '200':
+          description: Successfully retrieved the list of currency offers.
+    post:
+      summary: Create Currency Offer
+      description: Create a new currency offer.
+      operationId: createCurrencyOffer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Successfully created the currency offer.
+  /currency-offers/{currencyOfferId}:
+    get:
+      summary: Get Currency Offer
+      description: Retrieve details of a specific currency offer by its ID.
+      operationId: getCurrencyOfferById
+      parameters:
+        - name: currencyOfferId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully retrieved the currency offer.
+        '404':
+          description: Currency offer not found.
+    patch:
+      summary: Update Currency Offer
+      description: Update a specific currency offer by its ID.
+      operationId: updateCurrencyOffer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Successfully updated the currency offer.
+  /currency-offers/{currencyOfferId}/actions/list:
+    patch:
+      summary: List Currency Offer
+      description: List a specific currency offer.
+      operationId: listCurrencyOffer
+      parameters:
+        - name: currencyOfferId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully listed the currency offer.
+  /currency-offers/{currencyOfferId}/actions/unlist:
+    patch:
+      summary: Unlist Currency Offer
+      description: Unlist a specific currency offer.
+      operationId: unlistCurrencyOffer
+      parameters:
+        - name: currencyOfferId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully unlisted the currency offer.
+  /currency-offers/{currencyOfferId}/actions/archive:
+    patch:
+      summary: Archive Currency Offer
+      description: Archive a specific currency offer.
+      operationId: archiveCurrencyOffer
+      parameters:
+        - name: currencyOfferId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully archived the currency offer.
+  /currency-offers/{currencyOfferId}/actions/unarchive:
+    patch:
+      summary: Restore Currency Offer
+      description: Restore a specific currency offer.
+      operationId: restoreCurrencyOffer
+      parameters:
+        - name: currencyOfferId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully restored the currency offer.
 
 components:
   schemas:
