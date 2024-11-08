@@ -27,6 +27,12 @@
   },
   "anchors": [
     {
+      "name": "API Reference",
+      "openapi": "/openapi.json",
+      "url": "api-reference",
+      "icon": "square-terminal"
+    },
+    {
       "name": "Developers Chat",
       "icon": "discord",
       "url": "https://discord.com/channels/499268368545611787/1234627294228779018"
@@ -43,41 +49,6 @@
       "pages": [
         "introduction",
         "authentication"
-      ]
-    },
-    {
-      "group": "Accounts",
-      "pages": [
-        "api-reference/accounts/get",
-        "api-reference/accounts/post",
-        "api-reference/accounts/get-template",
-        "api-reference/accounts/list",
-        "api-reference/accounts/update-status",
-        "api-reference/accounts/bulk-status",
-        "api-reference/accounts/delete",
-        "api-reference/accounts/get-by-login"
-      ]
-    },
-    {
-      "group": "Item Offers",
-      "pages": [
-        "api-reference/item-offers/get",
-        "api-reference/item-offers/list",
-        "api-reference/item-offers/update-status",
-        "api-reference/item-offers/bulk-status"
-      ]
-    },
-    {
-      "group": "Currency Offers",
-      "pages": [
-        "api-reference/currency-offers/get",
-        "api-reference/currency-offers/post",
-        "api-reference/currency-offers/get-all",
-        "api-reference/currency-offers/update",
-        "api-reference/currency-offers/list-offer",
-        "api-reference/currency-offers/unlist",
-        "api-reference/currency-offers/archive",
-        "api-reference/currency-offers/restore"
       ]
     }
   ],

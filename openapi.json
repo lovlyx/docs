@@ -22,7 +22,7 @@
   ],
   "components": {
     "schemas": {
-      "Account": {
+      "AccountItem": {
         "type": "object",
         "properties": {
           "id": {
@@ -262,11 +262,257 @@
           },
           "account_data": {
             "type": "object",
-            "description": "Additional account data as a JSON object."
+            "description": "Game specific data of the account, get the schema from the `/accounts/template/{gameSlug}` endpoint."
           },
           "game_items": {
             "type": "object",
             "description": "Contains game item collections such as characters, skins, etc.\n"
+          }
+        }
+      },
+      "UpsertCurrencyOffer": {
+        "type": "object",
+        "required": [
+          "description",
+          "price",
+          "game",
+          "stock",
+          "min_quantity",
+          "delivery_time"
+        ],
+        "properties": {
+          "description": {
+            "type": "string",
+            "maxLength": 5028,
+            "description": "Description of the currency offer."
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "Price of the currency offer in euro, allowing up to six decimal places.",
+            "pattern": "^\\d+(\\.\\d{1,6})?$"
+          },
+          "game": {
+            "type": "string",
+            "description": "Slug of the game associated with the offer."
+          },
+          "stock": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000000,
+            "description": "Available stock for the currency offer."
+          },
+          "min_quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000000,
+            "description": "Minimum purchase quantity for the currency offer."
+          },
+          "currency_data": {
+            "type": "array",
+            "nullable": true,
+            "description": "Game specific data for the currency offer."
+          },
+          "delivery_instructions": {
+            "type": "string",
+            "nullable": true,
+            "description": "Optional delivery instructions for the currency offer."
+          },
+          "delivery_time": {
+            "type": "object",
+            "required": [
+              "duration",
+              "unit"
+            ],
+            "properties": {
+              "duration": {
+                "type": "number",
+                "description": "Duration for delivery in the specified unit."
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "minutes",
+                  "hours",
+                  "days"
+                ],
+                "description": "Unit of time for delivery duration."
+              }
+            }
+          }
+        }
+      },
+      "CurrencyOffer": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "$ref": "#/components/schemas/CurrencyOfferItem"
+          }
+        }
+      },
+      "CurrencyOfferList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/CurrencyOfferItem"
+            }
+          }
+        }
+      },
+      "CurrencyOfferItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the currency offer."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "currencyOffers"
+            ],
+            "description": "Resource type, fixed as \"currencyOffers\"."
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "uuid": {
+                "type": "string",
+                "format": "uuid",
+                "description": "Unique UUID for the currency offer."
+              },
+              "title": {
+                "type": "string",
+                "description": "Title of the currency offer."
+              },
+              "game_slug": {
+                "type": "string",
+                "description": "Slug representing the game associated with the currency offer."
+              },
+              "currency_unit": {
+                "type": "object",
+                "description": "Details of the currency unit.",
+                "properties": {
+                  "currency_name": {
+                    "type": "string",
+                    "description": "Name of the currency (e.g., \"Gold\")."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Unit name (e.g., \"Thousand\")."
+                  },
+                  "symbol": {
+                    "type": "string",
+                    "description": "Symbol representing the unit (e.g., \"K\")."
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "description": "Multiplier value for the unit (e.g., 1000 for \"Thousand\")."
+                  }
+                }
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the currency offer."
+              },
+              "price": {
+                "type": "number",
+                "format": "float",
+                "description": "Price per unit of the currency offer in euro."
+              },
+              "stock": {
+                "type": "integer",
+                "description": "Available stock for the currency offer."
+              },
+              "min_quantity": {
+                "type": "integer",
+                "description": "Minimum purchase quantity for the currency offer."
+              },
+              "data": {
+                "type": "object",
+                "description": "Game specific data associated with the currency offer."
+              },
+              "delivery_time": {
+                "type": "object",
+                "description": "Details of the delivery time for the currency offer.",
+                "properties": {
+                  "duration": {
+                    "type": "number",
+                    "description": "Duration for delivery."
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "minutes",
+                      "hours",
+                      "days"
+                    ],
+                    "description": "Unit of time for delivery duration."
+                  },
+                  "format": {
+                    "type": "string",
+                    "description": "Short formatted delivery time (e.g., \"5 min\")."
+                  },
+                  "formatLong": {
+                    "type": "string",
+                    "description": "Long formatted delivery time (e.g., \"5 minutes\")."
+                  },
+                  "seconds": {
+                    "type": "integer",
+                    "description": "Delivery time in seconds."
+                  }
+                }
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "listed",
+                  "draft",
+                  "archived"
+                ],
+                "description": "Status of the currency offer."
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp of when the currency offer was created."
+              },
+              "listed_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp of when the currency offer was listed."
+              },
+              "updated_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp of the last update to the currency offer."
+              }
+            }
+          }
+        }
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "$ref": "#/components/schemas/AccountItem"
+          }
+        }
+      },
+      "AccountList": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "$ref": "#/components/schemas/AccountItem"
+            }
           }
         }
       }
@@ -281,6 +527,9 @@
   "paths": {
     "/accounts": {
       "post": {
+        "tags": [
+          "Accounts"
+        ],
         "summary": "Create Account",
         "description": "Create a new account using the provided JSON schema. To get the schema, use the `/accounts/template/{gameSlug}` endpoint.",
         "operationId": "createSellerAccount",
@@ -307,6 +556,9 @@
         }
       },
       "get": {
+        "tags": [
+          "Accounts"
+        ],
         "summary": "Get All Accounts",
         "description": "Retrieve a list of all accounts associated with the authenticated user. Use the optional `with_data` query parameter to load full account details.",
         "operationId": "getSellerAccounts",
@@ -327,15 +579,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Account"
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/AccountList"
                 }
               }
             }
@@ -345,6 +589,9 @@
     },
     "/accounts/template/{gameSlug}": {
       "get": {
+        "tags": [
+          "Accounts"
+        ],
         "summary": "Get Account Schema",
         "description": "Retrieve the JSON schema template for creating an account for a specific game.",
         "operationId": "getAccountTemplate",
@@ -367,6 +614,9 @@
     },
     "/accounts/{accountId}": {
       "get": {
+        "tags": [
+          "Accounts"
+        ],
         "summary": "Get Account",
         "description": "Retrieve details of a specific account by its ID. Use the optional `with_data` query parameter to load full account details.",
         "operationId": "getSellerAccountById",
@@ -395,6 +645,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Accounts"
+        ],
         "summary": "Delete Account",
         "description": "Delete a specific account by its ID.",
         "operationId": "deleteSellerAccount",
@@ -417,6 +670,9 @@
     },
     "/accounts/by-login/{accountLogin}": {
       "get": {
+        "tags": [
+          "Accounts"
+        ],
         "summary": "Get Account by Login",
         "description": "Retrieve details of a specific account by its login.",
         "operationId": "getSellerAccountByLogin",
@@ -446,6 +702,9 @@
     },
     "/accounts/{accountId}/status": {
       "patch": {
+        "tags": [
+          "Accounts"
+        ],
         "summary": "Update Account Status",
         "description": "List or unlist a specific account by updating its status.",
         "operationId": "updateSellerAccountStatus",
@@ -496,6 +755,9 @@
     },
     "/accounts/status/bulk": {
       "patch": {
+        "tags": [
+          "Accounts"
+        ],
         "summary": "Bulk Update Status",
         "description": "List or unlist multiple accounts by updating their status in bulk.",
         "operationId": "bulkUpdateSellerAccountStatus",
@@ -547,6 +809,9 @@
     },
     "/item-offers": {
       "get": {
+        "tags": [
+          "Item Offers"
+        ],
         "summary": "Get All Item Offers",
         "description": "Retrieve a list of all item offers associated with the authenticated user.",
         "operationId": "getSellerItems",
@@ -559,6 +824,9 @@
     },
     "/item-offers/{itemOfferId}": {
       "get": {
+        "tags": [
+          "Item Offers"
+        ],
         "summary": "Get Item Offer",
         "description": "Retrieve details of a specific item by its ID",
         "operationId": "getSellerItemOfferById",
@@ -581,6 +849,9 @@
     },
     "/item-offers/{itemOfferId}/status": {
       "patch": {
+        "tags": [
+          "Item Offers"
+        ],
         "summary": "Update Item Offer Status",
         "description": "List, unlist or archive a specific item offer by updating its status.",
         "operationId": "updateSellerItemOfferStatus",
@@ -632,6 +903,9 @@
     },
     "/item-offers/status/bulk": {
       "patch": {
+        "tags": [
+          "Item Offers"
+        ],
         "summary": "Bulk Update Item Offer Status",
         "description": "List, unlist or archive multiple item offers by updating their status in bulk.",
         "operationId": "bulkUpdateSellerItemOfferStatus",
@@ -684,16 +958,29 @@
     },
     "/currency-offers": {
       "get": {
+        "tags": [
+          "Currency Offers"
+        ],
         "summary": "Get All Currency Offers",
         "description": "Retrieve a list of all currency offers.",
         "operationId": "getCurrencyOffers",
         "responses": {
           "200": {
-            "description": "Successfully retrieved the list of currency offers."
+            "description": "Successfully retrieved the list of currency offers.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrencyOfferList"
+                }
+              }
+            }
           }
         }
       },
       "post": {
+        "tags": [
+          "Currency Offers"
+        ],
         "summary": "Create Currency Offer",
         "description": "Create a new currency offer.",
         "operationId": "createCurrencyOffer",
@@ -701,20 +988,30 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "$ref": "#/components/schemas/UpsertCurrencyOffer"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Successfully created the currency offer."
+            "description": "Successfully created the currency offer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrencyOffer"
+                }
+              }
+            }
           }
         }
       }
     },
     "/currency-offers/{currencyOfferId}": {
       "get": {
+        "tags": [
+          "Currency Offers"
+        ],
         "summary": "Get Currency Offer",
         "description": "Retrieve details of a specific currency offer by its ID.",
         "operationId": "getCurrencyOfferById",
@@ -730,7 +1027,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved the currency offer."
+            "description": "Successfully retrieved the currency offer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrencyOffer"
+                }
+              }
+            }
           },
           "404": {
             "description": "Currency offer not found."
@@ -738,6 +1042,9 @@
         }
       },
       "patch": {
+        "tags": [
+          "Currency Offers"
+        ],
         "summary": "Update Currency Offer",
         "description": "Update a specific currency offer by its ID.",
         "operationId": "updateCurrencyOffer",
@@ -755,20 +1062,30 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "$ref": "#/components/schemas/UpsertCurrencyOffer"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Successfully updated the currency offer."
+            "description": "Successfully updated the currency offer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrencyOffer"
+                }
+              }
+            }
           }
         }
       }
     },
     "/currency-offers/{currencyOfferId}/actions/list": {
       "patch": {
+        "tags": [
+          "Currency Offers"
+        ],
         "summary": "List Currency Offer",
         "description": "List a specific currency offer.",
         "operationId": "listCurrencyOffer",
@@ -791,6 +1108,9 @@
     },
     "/currency-offers/{currencyOfferId}/actions/unlist": {
       "patch": {
+        "tags": [
+          "Currency Offers"
+        ],
         "summary": "Unlist Currency Offer",
         "description": "Unlist a specific currency offer.",
         "operationId": "unlistCurrencyOffer",
@@ -813,6 +1133,9 @@
     },
     "/currency-offers/{currencyOfferId}/actions/archive": {
       "patch": {
+        "tags": [
+          "Currency Offers"
+        ],
         "summary": "Archive Currency Offer",
         "description": "Archive a specific currency offer.",
         "operationId": "archiveCurrencyOffer",
@@ -835,6 +1158,9 @@
     },
     "/currency-offers/{currencyOfferId}/actions/unarchive": {
       "patch": {
+        "tags": [
+          "Currency Offers"
+        ],
         "summary": "Restore Currency Offer",
         "description": "Restore a specific currency offer.",
         "operationId": "restoreCurrencyOffer",
