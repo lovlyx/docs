@@ -43,6 +43,10 @@
                 "type": "string",
                 "description": "Title of the account listing."
               },
+              "slug": {
+                "type": "string",
+                "description": "Slug/uri of the account listing."
+              },
               "description": {
                 "type": "string",
                 "description": "Description of the account."
