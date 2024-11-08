@@ -1,0 +1,859 @@
+{
+  "info": {
+    "title": "GameBoost Seller API",
+    "description": "API for sellers to manage their accounts on gameboost.com",
+    "version": "1.0.0",
+    "contact": {
+      "name": "GameBoost Support",
+      "email": "support@gameboost.com",
+      "url": "https://gameboost.com/support"
+    }
+  },
+  "openapi": "3.0.3",
+  "servers": [
+    {
+      "url": "https://api.gameboost.com/v1"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the account."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "accounts"
+            ],
+            "description": "Resource type, fixed as \"accounts\"."
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Title of the account listing."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the account."
+              },
+              "game_slug": {
+                "type": "string",
+                "description": "Slug representing the game associated with the account (e.g., \"league-of-legends\")."
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "Draft",
+                  "Pending",
+                  "Listed",
+                  "Processing",
+                  "Sold",
+                  "Refunded"
+                ],
+                "description": "Status of the account (e.g., \"Listed\")."
+              },
+              "server": {
+                "type": "string",
+                "description": "Server of the account (e.g., \"EUW\")."
+              },
+              "level_up_method": {
+                "type": "string",
+                "enum": [
+                  "Handmade",
+                  "Botted"
+                ],
+                "description": "Method used to level up the account."
+              },
+              "ign": {
+                "type": "string",
+                "description": "In-game name (IGN) associated with the account."
+              },
+              "login": {
+                "type": "string",
+                "description": "Login username for the account."
+              },
+              "password": {
+                "type": "string",
+                "description": "Password for the account."
+              },
+              "email_login": {
+                "type": "string",
+                "description": "Optional email login associated with the account."
+              },
+              "email_password": {
+                "type": "string",
+                "nullable": true,
+                "description": "Optional password for the associated email."
+              },
+              "price": {
+                "type": "number",
+                "format": "float",
+                "description": "Price of the account."
+              },
+              "data": {
+                "type": "object",
+                "nullable": true,
+                "description": "Additional game specific data of the account."
+              },
+              "trend_score": {
+                "type": "integer",
+                "description": "Trend score of the account."
+              },
+              "is_featured": {
+                "type": "boolean",
+                "description": "Indicates if the account is featured."
+              },
+              "is_rare": {
+                "type": "boolean",
+                "description": "Indicates if the account is marked as rare."
+              },
+              "is_discounted": {
+                "type": "boolean",
+                "description": "Indicates if the account is currently discounted."
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "description": "List of URLs for images of the account."
+              },
+              "created_at": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Timestamp indicating when the account was created."
+              },
+              "sold_at": {
+                "type": "integer",
+                "format": "int64",
+                "nullable": true,
+                "description": "Timestamp indicating when the account was sold."
+              },
+              "updated_at": {
+                "type": "integer",
+                "format": "int64",
+                "description": "Timestamp of the last update to the account."
+              }
+            }
+          }
+        }
+      },
+      "CreateAccountSchema": {
+        "type": "object",
+        "required": [
+          "game",
+          "title",
+          "price",
+          "login",
+          "password",
+          "has_2fa",
+          "description",
+          "account_data",
+          "image_urls"
+        ],
+        "properties": {
+          "game": {
+            "type": "string",
+            "description": "The game associated with the account (e.g., \"fortnite\", \"league-of-legends\")."
+          },
+          "title": {
+            "type": "string",
+            "description": "Title for the account listing."
+          },
+          "slug": {
+            "type": "string",
+            "description": "Optional slug for the account listing."
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "description": "Price of the account in euro."
+          },
+          "ign": {
+            "type": "string",
+            "description": "Optional in-game name (IGN) associated with the account."
+          },
+          "login": {
+            "type": "string",
+            "description": "Login username for the account."
+          },
+          "password": {
+            "type": "string",
+            "description": "Password for the account."
+          },
+          "email_login": {
+            "type": "string",
+            "description": "Optional email login associated with the account."
+          },
+          "email_password": {
+            "type": "string",
+            "description": "Optional password for the associated email."
+          },
+          "is_manual": {
+            "type": "boolean",
+            "description": "Determines if the account is instant delivery or manual delivery. \nWhen set to true, the `delivery_time` field becomes required.\n"
+          },
+          "delivery_time": {
+            "type": "object",
+            "description": "Optional delivery time for the account, required only when `is_manual` is set to true.\n",
+            "properties": {
+              "duration": {
+                "type": "integer",
+                "description": "Duration for delivery."
+              },
+              "unit": {
+                "type": "string",
+                "enum": [
+                  "minutes",
+                  "hours",
+                  "days"
+                ],
+                "description": "Unit of time for delivery duration."
+              }
+            }
+          },
+          "has_2fa": {
+            "type": "boolean",
+            "description": "Indicates if the account has two-factor authentication enabled."
+          },
+          "server": {
+            "type": "string",
+            "description": "Required when the game has specific servers (e.g., \"Europe West\").\nIf not applicable for the game, this field should be omitted.\n"
+          },
+          "level_up_method": {
+            "type": "string",
+            "enum": [
+              "by_hand",
+              "by_bot"
+            ],
+            "description": "Method used to level up the account. This field is required when \nthe game is \"League of Legends\" or \"Valorant.\"\n"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the account."
+          },
+          "dump": {
+            "type": "string",
+            "description": "Optional keywords and tags associated with the account."
+          },
+          "delivery_instructions": {
+            "type": "string",
+            "description": "Optional instructions for delivery of the account."
+          },
+          "image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "URLs of images associated with the account."
+          },
+          "account_data": {
+            "type": "object",
+            "description": "Additional account data as a JSON object."
+          },
+          "game_items": {
+            "type": "object",
+            "description": "Contains game item collections such as characters, skins, etc.\n"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/accounts": {
+      "post": {
+        "summary": "Create Account",
+        "description": "Create a new account using the provided JSON schema. To get the schema, use the `/accounts/template/{gameSlug}` endpoint.",
+        "operationId": "createSellerAccount",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAccountSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created the account.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get All Accounts",
+        "description": "Retrieve a list of all accounts associated with the authenticated user. Use the optional `with_data` query parameter to load full account details.",
+        "operationId": "getSellerAccounts",
+        "parameters": [
+          {
+            "name": "with_data",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of accounts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Account"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accounts/template/{gameSlug}": {
+      "get": {
+        "summary": "Get Account Schema",
+        "description": "Retrieve the JSON schema template for creating an account for a specific game.",
+        "operationId": "getAccountTemplate",
+        "parameters": [
+          {
+            "name": "gameSlug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the account template."
+          }
+        }
+      }
+    },
+    "/accounts/{accountId}": {
+      "get": {
+        "summary": "Get Account",
+        "description": "Retrieve details of a specific account by its ID. Use the optional `with_data` query parameter to load full account details.",
+        "operationId": "getSellerAccountById",
+        "parameters": [
+          {
+            "name": "with_data",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the account.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Account",
+        "description": "Delete a specific account by its ID.",
+        "operationId": "deleteSellerAccount",
+        "responses": {
+          "200": {
+            "description": "Successfully deleted the account."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "accountId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/accounts/by-login/{accountLogin}": {
+      "get": {
+        "summary": "Get Account by Login",
+        "description": "Retrieve details of a specific account by its login.",
+        "operationId": "getSellerAccountByLogin",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the account.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "accountLogin",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/accounts/{accountId}/status": {
+      "patch": {
+        "summary": "Update Account Status",
+        "description": "List or unlist a specific account by updating its status.",
+        "operationId": "updateSellerAccountStatus",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "listed",
+                      "draft"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "List/Unlist Account": {
+                  "value": {
+                    "status": "listed"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the account status."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "accountId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/accounts/status/bulk": {
+      "patch": {
+        "summary": "Bulk Update Status",
+        "description": "List or unlist multiple accounts by updating their status in bulk.",
+        "operationId": "bulkUpdateSellerAccountStatus",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "accounts",
+                  "status"
+                ],
+                "properties": {
+                  "accounts": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "listed",
+                      "draft"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "Bulk List/Unlist Accounts": {
+                  "value": {
+                    "accounts": [
+                      "{{accountId1}}",
+                      "{{accountId2}}"
+                    ],
+                    "status": "listed"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the status of multiple accounts."
+          }
+        }
+      }
+    },
+    "/item-offers": {
+      "get": {
+        "summary": "Get All Item Offers",
+        "description": "Retrieve a list of all item offers associated with the authenticated user.",
+        "operationId": "getSellerItems",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of all items."
+          }
+        }
+      }
+    },
+    "/item-offers/{itemOfferId}": {
+      "get": {
+        "summary": "Get Item Offer",
+        "description": "Retrieve details of a specific item by its ID",
+        "operationId": "getSellerItemOfferById",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the account."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "itemOfferId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/item-offers/{itemOfferId}/status": {
+      "patch": {
+        "summary": "Update Item Offer Status",
+        "description": "List, unlist or archive a specific item offer by updating its status.",
+        "operationId": "updateSellerItemOfferStatus",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "listed",
+                      "draft",
+                      "archived"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "Archive Item Offer": {
+                  "value": {
+                    "status": "archived"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the item offer status."
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "itemOfferId",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/item-offers/status/bulk": {
+      "patch": {
+        "summary": "Bulk Update Item Offer Status",
+        "description": "List, unlist or archive multiple item offers by updating their status in bulk.",
+        "operationId": "bulkUpdateSellerItemOfferStatus",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "itemOffers",
+                  "status"
+                ],
+                "properties": {
+                  "itemOffers": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "listed",
+                      "draft",
+                      "archived"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "Bulk Archive Item Offers": {
+                  "value": {
+                    "itemOffers": [
+                      "{{itemOfferId1}}",
+                      "{{itemOfferId2}}"
+                    ],
+                    "status": "archived"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the status of multiple item offers."
+          }
+        }
+      }
+    },
+    "/currency-offers": {
+      "get": {
+        "summary": "Get All Currency Offers",
+        "description": "Retrieve a list of all currency offers.",
+        "operationId": "getCurrencyOffers",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of currency offers."
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Currency Offer",
+        "description": "Create a new currency offer.",
+        "operationId": "createCurrencyOffer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created the currency offer."
+          }
+        }
+      }
+    },
+    "/currency-offers/{currencyOfferId}": {
+      "get": {
+        "summary": "Get Currency Offer",
+        "description": "Retrieve details of a specific currency offer by its ID.",
+        "operationId": "getCurrencyOfferById",
+        "parameters": [
+          {
+            "name": "currencyOfferId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the currency offer."
+          },
+          "404": {
+            "description": "Currency offer not found."
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update Currency Offer",
+        "description": "Update a specific currency offer by its ID.",
+        "operationId": "updateCurrencyOffer",
+        "parameters": [
+          {
+            "name": "currencyOfferId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the currency offer."
+          }
+        }
+      }
+    },
+    "/currency-offers/{currencyOfferId}/actions/list": {
+      "patch": {
+        "summary": "List Currency Offer",
+        "description": "List a specific currency offer.",
+        "operationId": "listCurrencyOffer",
+        "parameters": [
+          {
+            "name": "currencyOfferId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully listed the currency offer."
+          }
+        }
+      }
+    },
+    "/currency-offers/{currencyOfferId}/actions/unlist": {
+      "patch": {
+        "summary": "Unlist Currency Offer",
+        "description": "Unlist a specific currency offer.",
+        "operationId": "unlistCurrencyOffer",
+        "parameters": [
+          {
+            "name": "currencyOfferId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully unlisted the currency offer."
+          }
+        }
+      }
+    },
+    "/currency-offers/{currencyOfferId}/actions/archive": {
+      "patch": {
+        "summary": "Archive Currency Offer",
+        "description": "Archive a specific currency offer.",
+        "operationId": "archiveCurrencyOffer",
+        "parameters": [
+          {
+            "name": "currencyOfferId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully archived the currency offer."
+          }
+        }
+      }
+    },
+    "/currency-offers/{currencyOfferId}/actions/unarchive": {
+      "patch": {
+        "summary": "Restore Currency Offer",
+        "description": "Restore a specific currency offer.",
+        "operationId": "restoreCurrencyOffer",
+        "parameters": [
+          {
+            "name": "currencyOfferId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully restored the currency offer."
+          }
+        }
+      }
+    }
+  }
+}

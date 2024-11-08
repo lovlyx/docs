@@ -82,7 +82,7 @@
     }
   ],
   "openapi": [
-    "/openapi.yaml"
+    "/openapi.json"
   ],
   "footerSocials": {
     "x": "https://x.com/GameBoostCom",
