@@ -1184,6 +1184,31 @@
           }
         }
       }
+    },
+    "/currency-orders/{currencyOrderId}/actions/complete": {
+      "patch": {
+        "tags": [
+          "Currency Orders"
+        ],
+        "summary": "Complete Currency Order",
+        "description": "Mark a currency order as completed.",
+        "operationId": "completeCurrencyOrder",
+        "parameters": [
+          {
+            "name": "currencyOrderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully completed the currency order."
+          }
+        }
+      }
     }
   }
 }
